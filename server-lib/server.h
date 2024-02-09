@@ -1,28 +1,41 @@
+#include <stdlib.h>
+
 #ifndef SERVER_H
 #define SERVER_H
 
-// ================
-// CONSTANTS
-// ================
+struct http_request {
+  char *file_name;
+  char *file_ext;
+  int is_get_request;
+};
 
-// General
-static const bool ERROR_LOGGING_ENABLED = true;
-static const bool INFO_LOGGING_ENABLED = true;
-static const int SOCKET_MAX_QUEUE = 10;
-static const int MAX_HTTP_RESPONSE_SIZE = 1024 * 1024;
+void log_http_request(struct http_request *request);
 
-// Error codes
-static const int ERR_CODE_UNKNOWN = -1;
-static const int ERR_CODE_SOCKET_FAILED = -2;
-static const int ERR_CODE_BIND_FAILED = -3;
-static const int ERR_CODE_LISTEN_FAILED = -4;
-static const int ERR_CODE_CLOSE_FAILED = -5;
-static const int ERR_CODE_SET_SOCKET_PROP_FAILED = -6;
+struct url_path {
+  char *path;
+  char *response;
+};
 
-// ================
+struct url_register {
+  struct url_path *paths;
+  size_t size;
+};
 
-int python_register_url(char* path, char* response);
-int setup_server(int port_number);
-int start_server();
+int is_in_register(const struct url_register *url_register,
+                   struct url_path **path, const char *input_path);
+void register_url_in_register(struct url_register *url_register,
+                              const struct url_path *path);
+void destroy_register(struct url_register *url_register);
+
+
+struct server_props {
+	int port_number;
+  int server_fd;
+  struct url_register *url_register;
+};
+
+int create_server(struct server_props* server, int port);
+
+int destroy_server(struct server_props* server);
 
 #endif // SERVER_H
