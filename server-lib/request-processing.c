@@ -18,12 +18,13 @@ const char *get_file_extension(const char *file_name) {
 }
 
 const char *get_mime_type(const char *file_ext) {
-  if (strcasecmp(file_ext, "txt") == 0) {
-    return "text/plain";
-  } else if (strcasecmp(file_ext, "json") == 0) {
+  if (strcasecmp(file_ext, "txt") == 0 || strcasecmp(file_ext, "json") == 0) {
     return "text/json";
-  } else {
+  } else if (strcasecmp(file_ext, "html") == 0 ||
+             strcasecmp(file_ext, "htm") == 0) {
     return "text/html";
+  } else {
+    return "text/plain";
   }
 }
 

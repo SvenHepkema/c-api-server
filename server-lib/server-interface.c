@@ -1,15 +1,16 @@
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "constants.h"
-#include "utils.h"
-#include "server.h"
-#include "server-interface.h"
 #include "request-processing.h"
+#include "server-interface.h"
+#include "server.h"
+#include "utils.h"
 
 // FIX Find better solution for this
-struct server_props* global_server;
+struct server_props *global_server;
 
 void sigint_callback() {
   log_error_code(destroy_server(global_server));
@@ -17,8 +18,8 @@ void sigint_callback() {
 }
 
 int setup_server(int port_number) {
-	global_server = (struct server_props*) malloc(sizeof(struct server_props));
-	return create_server(global_server, port_number);
+  global_server = (struct server_props *)malloc(sizeof(struct server_props));
+  return create_server(global_server, port_number);
 }
 
 // Returns error code or the number of requests it successfully handled
@@ -36,7 +37,7 @@ int start_server() {
   return request_count;
 }
 
-int register_url(struct url_path* path) {
+int register_url(struct url_path *path) {
   if (INFO_LOGGING_ENABLED) {
     printf("Registered path '%s'\n", path->path);
   }
@@ -44,4 +45,17 @@ int register_url(struct url_path* path) {
   register_url_in_register(global_server->url_register, path);
 
   return 0;
+}
+
+int register_path_callback(char *path,
+                           int (*callback)(struct http_request *request,
+                                            struct json_response *response)) {
+  struct url_path *url = (struct url_path *)malloc(sizeof(struct url_path));
+  url->path = malloc(sizeof(char) * strlen(path));
+  strcpy(url->path, path);
+  url->callback = callback;
+
+	register_url(url);
+
+	return 0;
 }
