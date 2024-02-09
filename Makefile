@@ -1,5 +1,5 @@
 CC=gcc
-FLAGS=-g
+FLAGS=-O3
 
 SERVER_LIB_DIR=server-lib
 SRC_DIR=implementation

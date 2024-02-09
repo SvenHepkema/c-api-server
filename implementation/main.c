@@ -6,10 +6,9 @@
 #include "../server-lib/server-interface.h"
 
 int lorem_ipsum(struct http_request *request, struct json_response *response) {
-  char *message = "{\"message\": \"Lorem Ipsum\"}";
-
-  response->response = (char *)malloc(sizeof(char) * strlen(message));
-  strcpy(response->response, message);
+  char *message = "a";
+  response->response = (char *)malloc(sizeof(char) * 2);
+	memcpy(response->response, message, 2);
 
   return 0;
 }
