@@ -20,6 +20,17 @@ void log_http_request(struct http_request *request) {
   }
 }
 
+void destroy_request(struct http_request* request) {
+    free(request->file_name);
+    free(request->file_ext);
+    free(request);
+}
+
+void destroy_response(struct http_response* response) {
+    free(response->response);
+    free(response);
+}
+
 int is_in_register(const struct url_register *url_register,
                    struct url_path **path, const char *input_path) {
   for (int i = 0; i < url_register->size; i++) {

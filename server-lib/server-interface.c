@@ -1,7 +1,6 @@
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 #include "constants.h"
 #include "utils.h"
@@ -37,19 +36,12 @@ int start_server() {
   return request_count;
 }
 
-int register_url(char *path, char *response) {
+int register_url(struct url_path* path) {
   if (INFO_LOGGING_ENABLED) {
-    printf("Registered path '%s' with response: %s\n", path, response);
+    printf("Registered path '%s'\n", path->path);
   }
 
-  // FIX Currently the allocations here are not freed properly, so mem leak
-  struct url_path *url = (struct url_path *)malloc(sizeof(struct url_path));
-  url->path = malloc(sizeof(char) * strlen(path));
-  strcpy(url->path, path);
-  url->response = malloc(sizeof(char) * strlen(response));
-  strcpy(url->response, response);
-
-  register_url_in_register(global_server->url_register, url);
+  register_url_in_register(global_server->url_register, path);
 
   return 0;
 }

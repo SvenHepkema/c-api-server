@@ -9,11 +9,25 @@ struct http_request {
   int is_get_request;
 };
 
+void destroy_request(struct http_request* request);
+
+struct http_response {
+	char *response;
+	size_t response_len;
+};
+
+void destroy_response(struct http_response* response);
+
+struct json_response {
+	char *response;
+};
+
+
 void log_http_request(struct http_request *request);
 
 struct url_path {
   char *path;
-  char *response;
+  int (*callback)(struct http_request* request, struct json_response* response);
 };
 
 struct url_register {
