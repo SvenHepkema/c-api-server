@@ -1,5 +1,7 @@
 #include <stdlib.h>
 
+#include "threadpool.h"
+
 #ifndef SERVER_H
 #define SERVER_H
 
@@ -46,6 +48,7 @@ struct server_props {
 	int port_number;
   int server_fd;
   struct url_register *url_register;
+	threadpool_t* threadpool;
 };
 
 int create_server(struct server_props* server, int port);

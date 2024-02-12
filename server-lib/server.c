@@ -68,6 +68,11 @@ int create_server(struct server_props* server, int port) {
   server->url_register = malloc(sizeof(struct url_register));
   server->url_register->size = 0;
   server->url_register->paths = NULL;
+	
+  // Creating the threadpool
+  server->threadpool = malloc(sizeof(threadpool_t));
+  create_threadpool(100, 1000, server->threadpool);
+
 
   // create server socket
   server->server_fd = socket(AF_INET, SOCK_STREAM, 0);
@@ -87,12 +92,16 @@ int create_server(struct server_props* server, int port) {
 
   RETURN_CODE_IF_ERROR(listen(server->server_fd, SOCKET_MAX_QUEUE),
                        ERR_CODE_LISTEN_FAILED);
-
   return 0;
 }
 
 int destroy_server(struct server_props* server) {
   RETURN_CODE_IF_ERROR(close(server->server_fd), ERR_CODE_CLOSE_FAILED);
   destroy_register(server->url_register);
+	
+  // Destroying the threadpool
+  destroy_threadpool(server->threadpool);
+  free(server->threadpool);
+
   return 0;
 }

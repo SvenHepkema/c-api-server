@@ -8,6 +8,7 @@
 #include "constants.h"
 #include "request-processing.h"
 #include "server.h"
+#include "threadpool.h"
 
 const char *get_file_extension(const char *file_name) {
   const char *dot = strrchr(file_name, '.');
@@ -141,7 +142,7 @@ void create_response(struct server_props *server, struct http_request *request,
   }
 }
 
-void *handle_client(void *arg) {
+void handle_client(void *arg) {
   struct handle_client_args args = *((struct handle_client_args *)arg);
   char *buffer = (char *)malloc(MAX_HTTP_RESPONSE_SIZE * sizeof(char));
 
@@ -168,7 +169,6 @@ void *handle_client(void *arg) {
   close(args.client_fd);
   free(arg);
   free(buffer);
-  return NULL;
 }
 
 int run_server(struct server_props *server, int *request_count) {
@@ -188,10 +188,8 @@ int run_server(struct server_props *server, int *request_count) {
       continue;
     }
 
-    // create a new thread to handle client request
-    pthread_t thread_id;
-    pthread_create(&thread_id, NULL, handle_client, (void *)request_handle);
-    pthread_detach(thread_id);
+    add_task_to_threadpool(handle_client, (void*) request_handle, server->threadpool);
+
     (*request_count)++;
   }
 

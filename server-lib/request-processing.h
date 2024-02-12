@@ -20,7 +20,7 @@ void create_response(struct server_props *server, struct http_request *request,
 
 int process_http_request(char *buffer, struct http_request* request);
 
-void *handle_client(void *arg);
+void handle_client(void *arg);
 int run_server(struct server_props *server, int *request_count);
 
 #endif // REQUEST_PROCESSING_H
