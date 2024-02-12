@@ -5,7 +5,7 @@ by registering paths and associating them with callbacks to handle incoming requ
 As this is a hobby project, it is not meant for production use. The focus at the end will be on performance, 
 developing different approaches to get the most performance. This will be benchmarked and documented.
 
-This project builds upon the c server that I built for my [tiny-django](https://github.com/SvenHepkema/tiny-django) project. It also uses my own c implementation of a thread pool: [https://github.com/SvenHepkema/c-threadpool].
+This project expands upon the c server that I built for my [tiny-django](https://github.com/SvenHepkema/tiny-django) project. It also uses [my own c implementation](https://github.com/SvenHepkema/c-threadpool) of a thread pool.
 
 # Functionality
 

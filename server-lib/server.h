@@ -51,7 +51,7 @@ struct server_props {
 	threadpool_t* threadpool;
 };
 
-int create_server(struct server_props* server, int port);
+int create_server(struct server_props* server, int port, int n_threads, int polling_delay);
 
 int destroy_server(struct server_props* server);
 

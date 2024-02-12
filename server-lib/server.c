@@ -60,7 +60,7 @@ void destroy_register(struct url_register *url_register) {
   free(url_register);
 }
 
-int create_server(struct server_props* server, int port) {
+int create_server(struct server_props* server, int port, int n_threads, int polling_delay) {
   struct sockaddr_in server_addr;
 
 	server->port_number = port;
@@ -71,7 +71,7 @@ int create_server(struct server_props* server, int port) {
 	
   // Creating the threadpool
   server->threadpool = malloc(sizeof(threadpool_t));
-  create_threadpool(100, 1000, server->threadpool);
+  create_threadpool(n_threads, polling_delay, server->threadpool);
 
 
   // create server socket

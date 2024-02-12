@@ -17,9 +17,9 @@ void sigint_callback() {
   exit(0);
 }
 
-int setup_server(int port_number) {
+int setup_server(int port_number, int n_threads, int polling_delay) {
   global_server = (struct server_props *)malloc(sizeof(struct server_props));
-  return create_server(global_server, port_number);
+  return create_server(global_server, port_number, n_threads, polling_delay);
 }
 
 // Returns error code or the number of requests it successfully handled

@@ -14,7 +14,7 @@ int lorem_ipsum(struct http_request *request, struct json_response *response) {
 }
 
 int main() {
-  setup_server(8080);
+  setup_server(8080, 1, 1000);
 
   register_path_callback("loremipsum", lorem_ipsum);
   start_server();
