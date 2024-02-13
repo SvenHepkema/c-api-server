@@ -4,13 +4,13 @@
 #ifndef THREADPOOL_H
 #define THREADPOOL_H
 
-typedef struct task {
-  struct task *next;
+typedef struct task_inner {
+  struct task_inner *next;
   void *input_arguments;
   void (*task_executor)(void *input_arguments);
 } task_t;
 
-typedef struct task_list {
+typedef struct {
   size_t n_tasks;
   task_t *first_task;
   task_t *last_task;
@@ -21,7 +21,7 @@ typedef struct task_list {
   pthread_mutex_t *stop_lock;
 } task_list_t;
 
-typedef struct threadpool {
+typedef struct {
   size_t n_threads;
   pthread_t *threads;
 

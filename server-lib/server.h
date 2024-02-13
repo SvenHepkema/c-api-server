@@ -5,54 +5,53 @@
 #ifndef SERVER_H
 #define SERVER_H
 
-struct http_request {
+typedef struct {
   char *file_name;
   char *file_ext;
   int is_get_request;
-};
+} http_request_t;
 
-void destroy_request(struct http_request* request);
+void destroy_request(http_request_t *request);
 
-struct http_response {
-	char *response;
-	size_t response_len;
-};
+typedef struct {
+  char *response;
+  size_t response_len;
+} http_response_t;
 
-void destroy_response(struct http_response* response);
+void destroy_response(http_response_t *response);
 
-struct json_response {
-	char *response;
-};
+typedef struct {
+  char *response;
+} json_response_t;
 
+void log_http_request(http_request_t *request);
 
-void log_http_request(struct http_request *request);
-
-struct url_path {
+typedef struct {
   char *path;
-  int (*callback)(struct http_request* request, struct json_response* response);
-};
+  int (*callback)(http_request_t *request, json_response_t *response);
+} url_path_t;
 
-struct url_register {
-  struct url_path *paths;
+typedef struct {
+  url_path_t *paths;
   size_t size;
-};
+} url_register_t;
 
-int is_in_register(const struct url_register *url_register,
-                   struct url_path **path, const char *input_path);
-void register_url_in_register(struct url_register *url_register,
-                              const struct url_path *path);
-void destroy_register(struct url_register *url_register);
+int is_in_register(const url_register_t *url_register, url_path_t **path,
+                   const char *input_path);
+void register_url_in_register(url_register_t *url_register,
+                              const url_path_t *path);
+void destroy_register(url_register_t *url_register);
 
-
-struct server_props {
-	int port_number;
+typedef struct {
+  int port_number;
   int server_fd;
-  struct url_register *url_register;
-	threadpool_t* threadpool;
-};
+  url_register_t *url_register;
+  threadpool_t *threadpool;
+} server_t;
 
-int create_server(struct server_props* server, int port, int n_threads, int polling_delay);
+int create_server(server_t *server, int port, int n_threads,
+                  int polling_delay);
 
-int destroy_server(struct server_props* server);
+int destroy_server(server_t *server);
 
 #endif // SERVER_H

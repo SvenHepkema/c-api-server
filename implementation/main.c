@@ -5,7 +5,7 @@
 
 #include "../server-lib/server-interface.h"
 
-int lorem_ipsum(struct http_request *request, struct json_response *response) {
+int lorem_ipsum(http_request_t *request, json_response_t *response) {
   char *message = "a";
   response->response = (char *)malloc(sizeof(char) * 2);
 	memcpy(response->response, message, 2);
