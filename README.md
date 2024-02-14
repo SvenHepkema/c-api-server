@@ -7,6 +7,10 @@ developing different approaches to get the most performance. This will be benchm
 
 This project expands upon the c server that I built for my [tiny-django](https://github.com/SvenHepkema/tiny-django) project. It also uses [my own c implementation](https://github.com/SvenHepkema/c-threadpool) of a thread pool.
 
+# Benchmarking
+
+Benchmarking is done using [Apache Benchmark](https://httpd.apache.org/docs/2.4/programs/ab.html) to measure if performance improvements actually improve performance. All tests are done using the scripts in the benchmark-scripts repository.
+ 
 # Functionality
 
 The envisioned functionality will be:
